@@ -4,6 +4,9 @@ extern crate syn;
 extern crate quote;
 
 use proc_macro::TokenStream;
+use std::hash::{Hash, Hasher};
+use std::collections::hash_map::DefaultHasher;
+
 
 #[proc_macro_derive(Vaapad)]
 pub fn vaapad(input: TokenStream) -> TokenStream {
@@ -17,12 +20,15 @@ pub fn vaapad(input: TokenStream) -> TokenStream {
     gen.parse().unwrap()
 }
 
+
+
 fn impl_vaapad(ast: &syn::DeriveInput) -> quote::Tokens {
     let name = &ast.ident;
     quote! {
-        impl HelloWorld for #name {
-            fn hello_world() {
-                println!("Hello, World! My name is {}", stringify!(#name));
+        impl Vaapad for #name {
+            fn get_type_id() {
+                let fullname = concat!(module_path!(), "::", stringify!($expr))
+
             }
         }
     }
